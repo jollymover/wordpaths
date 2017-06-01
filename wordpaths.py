@@ -3,6 +3,12 @@
 import sys
 
 def get_subdict(file_name, length):
+    """Extracts all words of appropriate length from source dictionary.
+
+    :param file_name: The source dictionary path
+    :param length: The length of words to be extracted
+    :returns: Subdict (list)
+    """
     subdict = []
     with open(file_name, 'r') as file:
         for line in file:
@@ -13,6 +19,12 @@ def get_subdict(file_name, length):
     return subdict
 
 def compare(str1, str2):
+    """Compare simbols in two strings
+
+    :param str1: The first comparable string
+    :param str2: The second comparable string
+    :returns: Number of matched symbols
+    """
     matches = 0
     for i in range (0, len(str1)):
         if str1[i] == str2[i]:
@@ -20,6 +32,11 @@ def compare(str1, str2):
     return matches
 
 def get_graph(dic):
+    """Converts the dict to graph
+
+    :param dict: The source dict
+    :returns: Graph as two-dimension list
+    """
     graph = []
     length = len(dic[0])
     for i in range(0, len(dic)):
@@ -30,7 +47,13 @@ def get_graph(dic):
     return graph
 
 def fire_graph(graph, start):
+    """Finds pathes in the graph
 
+    :param graph: The source graph
+    :param start: The start vertice
+    :returns: Array of marks for each vertice (is it available from start
+    vertice) and array of priors (previos vertice for each array on the path)
+    """
     mark = []
     prior = []
     queue = []
@@ -43,17 +66,25 @@ def fire_graph(graph, start):
     mark[start] = 1
     prior[start] = -1
     while len(queue) > 0:
-        v = queue.pop(0)
-        for i in range(0, len(graph[v])):
-            to = graph[v][i]
+        vert = queue.pop(0)
+        for i in range(0, len(graph[vert])):
+            to = graph[vert][i]
             if mark[to] == 0:
                 mark[to] = 1
                 queue.append(to)
-                prior[to] = v
+                prior[to] = vert
     return mark, prior
 
 def main():
+    """Print word path in dictionary as:
 
+    wordpaths.py /usr/share/dict/words cat dog
+    cat -> cag -> cog -> dog
+
+    :param argv[1]: The path to dictionary file
+    :param argv[2]: The start word
+    :param argv[3]: The finish word
+    """
     path = []
 
     # Check and parse CLI arguments
@@ -83,16 +114,16 @@ def main():
     if mark[finish] == 0:
         print "No path"
     else:
-        v = finish
-        path.append(v)
-        while v != -1:
-            v = prior[v]
-            path.append(v)
+        vert = finish
+        path.append(vert)
+        while vert != -1:
+            vert = prior[vert]
+            path.append(vert)
 
     path.pop()
     path.reverse()
-    for v in range(0, len(path) - 1):
-        print subdict[path[v]], '->',
+    for vert in range(0, len(path) - 1):
+        print subdict[path[vert]], '->',
     print subdict[path[-1]]
 
     sys.exit(0)
