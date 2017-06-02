@@ -2,6 +2,7 @@
 
 import sys
 
+
 def get_subdict(file_name, length):
     """Extracts all words of appropriate length from source dictionary.
 
@@ -15,8 +16,8 @@ def get_subdict(file_name, length):
             item = line[:-1]
             if len(item) == length:
                 subdict.append(item)
-    file.close
     return subdict
+
 
 def compare(str1, str2):
     """Compare simbols in two strings
@@ -26,10 +27,11 @@ def compare(str1, str2):
     :returns: Number of matched symbols
     """
     matches = 0
-    for i in range (0, len(str1)):
+    for i in range(len(str1)):
         if str1[i] == str2[i]:
             matches += 1
     return matches
+
 
 def get_graph(dic):
     """Converts the dict to graph
@@ -39,12 +41,13 @@ def get_graph(dic):
     """
     graph = []
     length = len(dic[0])
-    for i in range(0, len(dic)):
+    for i in range(len(dic)):
         graph.append([])
-        for j in range(0, len(dic)):
+        for j in range(len(dic)):
             if compare(dic[i], dic[j]) == length - 1:
                 graph[i].append(j)
     return graph
+
 
 def fire_graph(graph, start):
     """Finds pathes in the graph
@@ -58,22 +61,22 @@ def fire_graph(graph, start):
     prior = []
     queue = []
 
-    for i in range(0, len(graph)):
+    for i in range(len(graph)):
         mark.append(0)
         prior.append(-1)
 
-    queue.insert(0, start)
+    queue.append(start)
     mark[start] = 1
     prior[start] = -1
-    while len(queue) > 0:
+    while queue:
         vert = queue.pop(0)
-        for i in range(0, len(graph[vert])):
-            to = graph[vert][i]
+        for to in graph[vert]:
             if mark[to] == 0:
                 mark[to] = 1
                 queue.append(to)
                 prior[to] = vert
     return mark, prior
+
 
 def main():
     """Print word path in dictionary as:
@@ -122,9 +125,7 @@ def main():
 
     path.pop()
     path.reverse()
-    for vert in range(0, len(path) - 1):
-        print subdict[path[vert]], '->',
-    print subdict[path[-1]]
+    print ' -> '.join(subdict[i] for i in path)
 
     sys.exit(0)
 

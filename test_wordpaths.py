@@ -7,7 +7,7 @@ from subprocess import check_output
 class TestStringMethods(unittest.TestCase):
 
     def test_get_subdict(self):
-        return wordpaths.get_subdict('test_dic', 3) == ['cat', 'cag', 'cog']
+        return len(wordpaths.get_subdict('test_dic', 3)) == 1420
 
     def test_compare(self):
         str1 = 'cat'
